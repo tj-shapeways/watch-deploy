@@ -1,0 +1,23 @@
+{
+  "name": "watch",
+  "version": "1.0.0",
+  "description": "Deploy script for Shapeways VMs",
+  "dependencies": {
+    "chokidar": "^2.0.2",
+    "cli-color": "^1.2.0",
+    "lodash": "^4.17.5",
+    "moment": "^2.21.0",
+    "node-emoji": "^1.8.1",
+    "rsync": "^0.6.1"
+  },
+  "main": "watch-cmd.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tj-shapeways/watch-deploy.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "T.J.",
+  "license": "MIT"
+}
