@@ -1,0 +1,8 @@
+{
+  "env": "dev*****.nyc.shapeways.net",
+  "localFolder":"/path/to/sync/",
+  "remoteFolder":"/remote/path/to/copy/to/",
+  "exclude":[
+    ".*"
+  ]
+}
