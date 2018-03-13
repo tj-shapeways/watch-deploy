@@ -10,7 +10,7 @@
     "node-emoji": "^1.8.1",
     "rsync": "^0.6.1"
   },
-  "main": "watch-cmd.js",
+  "main": "watch-deploy.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tj-shapeways/watch-deploy.git"
