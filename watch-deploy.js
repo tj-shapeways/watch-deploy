@@ -3,10 +3,13 @@
 const chokidar = require('chokidar');
 const _ = require('lodash');
 const Rsync = require('rsync');
-const config = require('./.config');
 const moment = require('moment');
 const clc = require('cli-color');
 const emoji = require('node-emoji');
+const fs = require('fs');
+
+const configRaw = fs.readFileSync('./.config');
+const config = JSON.parse(configRaw);
 
 const infoMessage = function infoMessage(text) {
   console.log(emoji.emojify(':loudspeaker:\t') + (text || ''));
@@ -32,9 +35,13 @@ const syncFiles = function syncFiles() {
     });
 };
 
-chokidar.watch(config.localFolder, {
-  // ignore .dotfiles
-  ignored: /(^|[\/\\])\../
+const watchFiles = function watchFiles() {
+  chokidar.watch(config.localFolder, {
+    // ignore .dotfiles
+    ignored: /(^|[\/\\])\../
   }).on('ready', () => {
     infoMessage('Watching all files in ' + config.localFolder);
   }).on('all', _.debounce(syncFiles, 500));
+};
+
+watchFiles();
