@@ -21,18 +21,20 @@ const doneMessage = function doneMessage(greenText, text) {
 
 const syncFiles = function syncFiles() {
   infoMessage('Syncing files');
-  new Rsync()
+  const rsync = new Rsync()
     .flags('av')
     .source(config.localFolder)
     .destination(config.env + ':' + config.remoteFolder)
-    .exclude(config.exclude)
-    .delete()
-    .execute((err) => {
-      if (err) throw err;
-      doneMessage('Success','Last sync at ' + moment().format('h:mm:ss A') + '.');
-    }, (data) => {
-      console.log(data.toString('utf8').trim());
-    });
+    .delete();
+  if (config.exclude) {
+    rsync.exclude(config.exclude);
+  }
+  rsync.execute((err) => {
+    if (err) throw err;
+    doneMessage('Success','Last sync at ' + moment().format('h:mm:ss A') + '.');
+  }, (data) => {
+    console.log(data.toString('utf8').trim());
+  });
 };
 
 const watchFiles = function watchFiles() {
