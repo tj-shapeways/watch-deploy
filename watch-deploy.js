@@ -29,6 +29,7 @@ const syncFiles = function syncFiles() {
   if (config.exclude) {
     rsync.exclude(config.exclude);
   }
+  console.log(rsync.command());
   rsync.execute((err) => {
     if (err) throw err;
     doneMessage('Success','Last sync at ' + moment().format('h:mm:ss A') + '.');
