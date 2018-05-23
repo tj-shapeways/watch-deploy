@@ -11,18 +11,34 @@ const fs = require('fs');
 const configRaw = fs.readFileSync('./.config');
 const config = JSON.parse(configRaw);
 
+/**
+ *
+ * @param text
+ */
 const infoMessage = function infoMessage(text) {
   console.log(emoji.emojify(':loudspeaker:\t') + (text || ''));
 };
 
+/**
+ *
+ * @param greenText
+ * @param text
+ */
 const doneMessage = function doneMessage(greenText, text) {
   console.log(emoji.emojify('\n:+1:\t' + clc.green(greenText) + '\t\t') + (text || '') + '\n');
 };
 
+/**
+ *
+ * @param text
+ */
 const logMessage = function logMessage(text) {
   console.log('\n\t' + (text || '') + '\n');
 };
 
+/**
+ * rsync files to the remove env
+ */
 const syncFiles = function syncFiles() {
   infoMessage('Syncing files');
   const rsync = new Rsync()
@@ -42,6 +58,9 @@ const syncFiles = function syncFiles() {
   });
 };
 
+/**
+ * Create a watcher for changes to files
+ */
 const watchFiles = function watchFiles() {
   chokidar.watch(config.localFolder, {
     // ignore .dotfiles
