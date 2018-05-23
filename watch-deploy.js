@@ -19,6 +19,10 @@ const doneMessage = function doneMessage(greenText, text) {
   console.log(emoji.emojify('\n:+1:\t' + clc.green(greenText) + '\t\t') + (text || '') + '\n');
 };
 
+const logMessage = function logMessage(text) {
+  console.log('\n\t' + (text || '') + '\n');
+};
+
 const syncFiles = function syncFiles() {
   infoMessage('Syncing files');
   const rsync = new Rsync()
@@ -29,7 +33,7 @@ const syncFiles = function syncFiles() {
   if (config.exclude) {
     rsync.exclude(config.exclude);
   }
-  console.log(rsync.command());
+  logMessage(rsync.command());
   rsync.execute((err) => {
     if (err) throw err;
     doneMessage('Success','Last sync at ' + moment().format('h:mm:ss A') + '.');
