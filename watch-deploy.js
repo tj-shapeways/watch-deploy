@@ -70,7 +70,6 @@ const watchFiles = function watchFiles() {
   }).on('all', _.debounce(syncFiles, 500));
 };
 
-
 // Make sure this is a dev environment in the form `dev***.nyc.shapeways.net` or `username@dev***.nyc.shapeways.net`
 if (config.env.indexOf('dev') !== 0 && config.env.indexOf('@dev') === -1) {
   throw new Error('This script can only be used to deploy to a development environment.')
