@@ -11,30 +11,56 @@ const fs = require('fs');
 const configRaw = fs.readFileSync('./.config');
 const config = JSON.parse(configRaw);
 
+/**
+ *
+ * @param text
+ */
 const infoMessage = function infoMessage(text) {
   console.log(emoji.emojify(':loudspeaker:\t') + (text || ''));
 };
 
+/**
+ *
+ * @param greenText
+ * @param text
+ */
 const doneMessage = function doneMessage(greenText, text) {
   console.log(emoji.emojify('\n:+1:\t' + clc.green(greenText) + '\t\t') + (text || '') + '\n');
 };
 
+/**
+ *
+ * @param text
+ */
+const logMessage = function logMessage(text) {
+  console.log('\n\t' + (text || '') + '\n');
+};
+
+/**
+ * rsync files to the remove env
+ */
 const syncFiles = function syncFiles() {
   infoMessage('Syncing files');
-  new Rsync()
+  const rsync = new Rsync()
     .flags('av')
     .source(config.localFolder)
     .destination(config.env + ':' + config.remoteFolder)
-    .exclude(config.exclude)
-    .delete()
-    .execute((err) => {
-      if (err) throw err;
-      doneMessage('Success','Last sync at ' + moment().format('h:mm:ss A') + '.');
-    }, (data) => {
-      console.log(data.toString('utf8').trim());
-    });
+    .delete();
+  if (config.exclude) {
+    rsync.exclude(config.exclude);
+  }
+  logMessage(rsync.command());
+  rsync.execute((err) => {
+    if (err) throw err;
+    doneMessage('Success','Last sync at ' + moment().format('h:mm:ss A') + '.');
+  }, (data) => {
+    console.log(data.toString('utf8').trim());
+  });
 };
 
+/**
+ * Create a watcher for changes to files
+ */
 const watchFiles = function watchFiles() {
   chokidar.watch(config.localFolder, {
     // ignore .dotfiles
@@ -43,7 +69,6 @@ const watchFiles = function watchFiles() {
     infoMessage('Watching all files in ' + config.localFolder);
   }).on('all', _.debounce(syncFiles, 500));
 };
-
 
 // Make sure this is a dev environment in the form `dev***.nyc.shapeways.net` or `username@dev***.nyc.shapeways.net`
 if (config.env.indexOf('dev') !== 0 && config.env.indexOf('@dev') === -1) {
